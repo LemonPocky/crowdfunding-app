@@ -5,6 +5,8 @@ const { Project } = require("../../models");
 
 router.post("/", async (req, res) => {
   try {
+    // TODO: Check if the user is logged in and has a valid user_id
+
     const newProject = await Project.create({
       ...req.body,
       user_id: req.session.user_id,
@@ -18,6 +20,12 @@ router.post("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
+    if (!req.session.loggedIn) {
+      // TODO: Return if the user is not logged in
+    }
+    const currentUser = req.session.user_id
+    // TODO: Check if the project id belongs to this user
+    
     const projectData = await Project.destroy({
       where: {
         id: req.params.id,
