@@ -15,12 +15,15 @@ router.get("/login", async (req, res) => {
 // Lily
 router.get("/details/:id", withAuth, async (req, res) => {
   try {
-    const projectData = await Project.findByPk(req.params.id);
+    const projectData = await Project.findByPk(req.params.id, {
+      include: [{ model: User, attributes: ["name"] }],
+    });
     if (!projectData) {
       res.sendStatus(404).json("Project Not Found");
       return;
     }
     const project = projectData.get({ plain: true });
+
     res.render("details", {
       project,
       logged_in: req.session.logged_in,
