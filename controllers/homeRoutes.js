@@ -26,14 +26,37 @@ router.get("/details/:id", withAuth, async (req, res) => {
       logged_in: req.session.logged_in,
     });
   } catch (error) {
-    res.status(500).json(err);
+    res.status(500).json(error);
   }
 });
 
 // Marko
 router.get("/profile", withAuth, async (req, res) => {
+    try{
+        const user_id = await User.findByPk(req.session.user_id, {
+            include: [
+                {
+                    model: Project,
+                    attributes:[
+                        'name',
+                        'date_created',
+                    ]
+                }
+                ]
+        });
+        // req.session.user_id 
+        if(!user_id){
+            res.sentStatus(404).json('User not found');
+            return;
+        }
+        res.render("profile");
+    }
+    catch(error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+    
   // TODO: Get the user_id from req.session
-  res.render("profile");
 });
 
 module.exports = router;
