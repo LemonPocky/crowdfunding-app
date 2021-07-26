@@ -13,7 +13,7 @@ router.get("/login", async (req, res) => {
 });
 
 // Lily
-router.get("/details/:id", async (req, res) => {
+router.get("/details/:id", withAuth, async (req, res) => {
   try {
     const projectData = await Project.findByPk(req.params.id, {
       include: [{ model: User, attributes: ["name"] }],
