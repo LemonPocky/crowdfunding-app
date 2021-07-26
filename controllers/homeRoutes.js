@@ -1,25 +1,28 @@
-const User = require("../models/User.js");
+
+//TODO: Implement home routes for serving html pages
 const router = require('express').Router();
+const { User, Project } = require('../models');
+const withAuth = require('../utils/auth');
 
+// Israel
 router.get('/', async (req, res) => {
-    res.render('homepage')
-})
-
-router.get('details', async (req, res) => {
-    res.render('details')
-})
+  res.render('homepage');
+});
 
 router.get('login', async (req, res) => {
-    res.render('login')
-})
+  res.render('login');
+});
 
-router.get('profile', async (req, res) => {
-    res.render('profile')
-})
+// Lily
+router.get('details/:id', withAuth, async (req, res) => {
+  res.render('details');
+});
 
-
-
-
+// Marko
+router.get('profile', withAuth, async (req, res) => {
+  // TODO: Get the user_id from req.session
+  res.render('profile');
+});
 
 
 
